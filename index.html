@@ -1,12 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left Brain vs Right Brain Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        .quiz-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
+    <div class="quiz-container">
+        <h2 id="question">Question will appear here</h2>
+        <div>
+            <input type="radio" name="answer" id="option1" value="left">
+            <label for="option1" id="option1-label">Option 1</label>
+        </div>
+        <div>
+            <input type="radio" name="answer" id="option2" value="right">
+            <label for="option2" id="option2-label">Option 2</label>
+        </div>
+        <button onclick="nextQuestion()">Next</button>
+        <p id="result" style="display:none;"></p>
+    </div>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    <script>
+        const questions = [
+            { q: "Do you prefer logic over creativity?", left: "Yes", right: "No" },
+            { q: "Do you enjoy solving puzzles more than painting?", left: "Yes", right: "No" },
+            { q: "Do you like planning things in advance?", left: "Yes", right: "No" },
+            { q: "Are you more comfortable with numbers than colors?", left: "Yes", right: "No" },
+            { q: "Do you analyze situations rather than go with your gut?", left: "Yes", right: "No" },
+            { q: "Do you rely on intuition rather than data?", left: "No", right: "Yes" },
+            { q: "Do you prefer stories over facts?", left: "No", right: "Yes" },
+            { q: "Are you more of a visual thinker than a logical one?", left: "No", right: "Yes" },
+            { q: "Do you enjoy music and art more than math?", left: "No", right: "Yes" },
+            { q: "Do you often daydream and think abstractly?", left: "No", right: "Yes" }
+        ];
 
+        let currentQuestion = 0;
+        let leftBrainScore = 0;
+        let rightBrainScore = 0;
+
+        function loadQuestion() {
+            if (currentQuestion < questions.length) {
+                document.getElementById("question").textContent = questions[currentQuestion].q;
+                document.getElementById("option1-label").textContent = questions[currentQuestion].left;
+                document.getElementById("option2-label").textContent = questions[currentQuestion].right;
+                document.getElementById("option1").checked = false;
+                document.getElementById("option2").checked = false;
+            } else {
+                showResult();
+            }
+        }
+
+        function nextQuestion() {
+            let selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) return alert("Please select an answer");
+
+            if (selectedOption.value === "left") leftBrainScore++;
+            else rightBrainScore++;
+
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function showResult() {
+            let resultText = leftBrainScore > rightBrainScore 
+                ? "You are Left Brain Dominant! Logical and Analytical."
+                : "You are Right Brain Dominant! Creative and Intuitive.";
+            document.querySelector(".quiz-container").innerHTML = `<h2>${resultText}</h2>`;
+        }
+
+        loadQuestion();
+    </script>
 </body>
 </html>
